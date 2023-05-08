@@ -21,14 +21,42 @@ def inference(model_inputs:dict) -> dict:
     global model
 
     # Parse out your arguments
-    prompt = model_inputs.get('prompt', None)
-    steps = model_inputs.get('num_inference_steps', 50)
-    scale = model_inputs.get('guidance_scale', 7)
-    if prompt == None:
-        return {'message': "No prompt provided"}
+
+    endpoint = model_inputs.get('endpoint',None)
+    params =  model_inputs.get('params', None)
+
+    if params == None:
+        return {'message': "No params provided"}
+
+
+    
+    prompt = params.get('prompt', None)
+    negative_prompt = params.get('negative_prompt', None)
+    steps = params.get('steps', 50)
+    cfg_scale = params.get('cfg_scale', 7)
+    batch_size = params.get('batch_size',1)
+    width = params.get('width',384)
+    height = params.get('height',384)
+    n_iter = params.get('n_iter',1)
+    seed = params.get('seed',-1)
+
+
+
+
+   
     
     # Run the model
-    result = model(prompt, num_inference_steps=steps, guidance_scale=scale)
+    result = model(prompt, 
+                   steps=steps, 
+                   scale=cfg_scale, 
+                   guidance_scale=cfg_scale,
+                   batch_size=batch_size,
+                   negative_prompt=negative_prompt,
+                   width=width,
+                   height=height,
+                   num_inference_steps=n_iter,
+                   prng_seed=seed,
+                      )
 
     # Check if result is an image or text
     image = result.images[0]
@@ -37,4 +65,20 @@ def inference(model_inputs:dict) -> dict:
     image_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
 
     # Return the results as a dictionary
-    return {'image_base64': image_base64}
+    return {'images': [image_base64]}
+
+
+# "endpoint": "txt2img",
+#   "params": {
+#     "prompt": "home",
+#     "negative_prompt": "low quality",
+#     "steps": 20,
+#     "sampler_name": "Euler a",
+#     "cfg_scale": 7.5,
+#     "seed": -1,
+#     "batch_size": 1,
+#     "n_iter": 1,
+#     "width": 768,
+#     "height": 768,
+#     "tiling": False
+#   }
