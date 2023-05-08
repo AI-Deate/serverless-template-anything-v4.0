@@ -2,12 +2,25 @@
     "name": "Anything v4.0",
     "category": "Computer Vision",
     "example_input": {
-        "prompt": "scenery, village, outdoors, sky, clouds",
-        "num_inference_steps": 50,
-        "guidance_scale": 7
-    },
-    "example_output": {
-        "base64_output": "<BASE64_IMAGE>"
-    },
+        "endpoint": "txt2img",
+        "params": {
+          "prompt": "an astronaut riding a (horse:motorcycle:0.5) on the moon",
+          "negative_prompt": "cartoonish, low quality",
+          "steps": 25,
+          "sampler_name": "Euler a",
+          "cfg_scale": 7.5,
+          "seed": 42,
+          "batch_size": 1,
+          "n_iter": 1,
+          "width": 768,
+          "height": 768,
+          "tiling": false
+        }
+      },
+      "example_output": {
+        "images": [
+          "<base64 output>"
+        ]
+      },
     "version": "2"
 }

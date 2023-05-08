@@ -63,22 +63,8 @@ def inference(model_inputs:dict) -> dict:
     buffered = BytesIO()
     image.save(buffered,format="JPEG")
     image_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
+    images = []
+    images.append(image_base64)
 
     # Return the results as a dictionary
-    return {'images': [image_base64]}
-
-
-# "endpoint": "txt2img",
-#   "params": {
-#     "prompt": "home",
-#     "negative_prompt": "low quality",
-#     "steps": 20,
-#     "sampler_name": "Euler a",
-#     "cfg_scale": 7.5,
-#     "seed": -1,
-#     "batch_size": 1,
-#     "n_iter": 1,
-#     "width": 768,
-#     "height": 768,
-#     "tiling": False
-#   }
+    return {'images': images}
